@@ -1,8 +1,8 @@
 const { DomClass } = require('wirejs-dom');
 
-const template = `<sample:pagebuildtime><span data-id='time'
+const template = `<eg:pagebuildtime><span data-id='time'
 	>record time</
-span></sample:pagebuildtime>`;
+span></eg:pagebuildtime>`;
 
 const PageBuildTime = DomClass(template, function _PageBuildTime() {
 	const _t = this;

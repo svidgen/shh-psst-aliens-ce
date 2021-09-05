@@ -1,27 +1,14 @@
 <!doctype html>
-<html xmlns:tpdc="https://www.thepointless.com/ns/tpdc">
+<html xmlns:eg="https://www.example.com/ns/eg">
 	<head>
 		<title>${title + " - my site"}</title>
-		<link rel="shortcut icon" type="image/ico" href="/images/favicon.ico"/>
+		<link rel="shortcut icon" type="image/svg" href="/images/dpad.svg"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		${metatags}
 		<script src='/layouts/default.js?v=${BUILD_ID}'></script>
 	</head>
 	<body>
-		<div id='container'>
-			<div id='header'>
-				<h1><a href='/'>My Site</a> / ${title || "Home"}</h1>
-			</div>
-			<div id='content'>
-				${body}
-			</div>
-			<div id='footer'>
-				<div id='sub-footer'>
-					<p>This page was constructed in <sample:pagebuildtime></sample:pagebuildtime>.</p>
-					<p><sample:copyright owner="ACME"></sample:copyright></p>
-				</div>
-			</div>
-		</div>
+		${body}
 	</body>
 </html>
