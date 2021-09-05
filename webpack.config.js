@@ -3,7 +3,6 @@ const path = require('path');
 const glob = require('glob');
 const CopyWebpackPlugin = require('copy-webpack-plugin'); 
 const marked = require('marked');
-const sitemap = require('./src/sitemap');
 
 // https://marked.js.org/using_advanced
 marked.setOptions({
