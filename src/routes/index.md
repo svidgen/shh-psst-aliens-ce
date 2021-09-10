@@ -1,5 +1,7 @@
 ${meta({
-	title: "Home",
-	description: "This is my site."
+	title: "Shh-Psst! Aliens!!! (CE)",
+	description: "This is a SpAcE game..."
 })}
-Your content goes here.
+<div>
+	<space:game></space:game>
+</div>

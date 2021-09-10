@@ -1,16 +1,8 @@
 const wirejs = require('wirejs-dom');
-require('highlight.js/styles/github.css');
-
 require('./default.css');
-require('../components/copyright');
-require('../components/page-build-time');
 
-const GoogleAds = require('ex-gratia/google');
-
-// no ads at "home".
-if (!location.hostname.match(/^localhost|127\.0\.0\.\d+|192\.168\.\d+\.\d+$/)) {
-	new GoogleAds().install();
-}
+const game = require('../components/game');
+console.log(game);
 
 // expose DomClass to later scripts.
 Object.assign(window, wirejs);
