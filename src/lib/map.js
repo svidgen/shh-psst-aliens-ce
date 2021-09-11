@@ -53,8 +53,8 @@ class GameMap {
 
 	aliensNear(x, y) {
 		let sum = 0;
-		for (let _x = x - 1; _x <= x; _x++) {
-			for (let _y = y - 1; _y <= y; _y++) {
+		for (let _x = x - 1; _x <= x + 1; _x++) {
+			for (let _y = y - 1; _y <= y + 1; _y++) {
 				if (this.data[_x] && this.data[_x][_y] === 'A') {
 					sum++;
 				}
