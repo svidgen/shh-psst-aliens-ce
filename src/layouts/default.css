@@ -7,3 +7,13 @@ body {
 	color: #333333;
 	background-color: white;
 }
+
+space\:grid > pre {
+	/* letter-spacing: 0.5em;
+	line-height: 1.2em; 
+	font-size: larger; */
+	padding-left: 10px;
+	font-size: 16px;
+	line-height: 20px;
+	letter-spacing: 10px;
+}
