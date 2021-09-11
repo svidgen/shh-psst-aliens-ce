@@ -4,6 +4,7 @@ class GameMap {
 
 	data = [];
 	clues = [];
+	position = [0,0];
 
 	constructor(init = {}) {
 		const defaults = {width: 10, height: 10, density: 0.25};
@@ -75,4 +76,4 @@ class GameMap {
 	};
 }
 
-module.exports = { GameMap };
+export default { GameMap };
