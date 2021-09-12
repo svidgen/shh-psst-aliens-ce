@@ -3,6 +3,7 @@ import { Commands } from './commands';
 
 const EMPTY = ' ';
 const ALIEN = 'A';
+const HERO = 'X';
 
 class GameMap {
 
@@ -122,7 +123,8 @@ class GameMap {
 				let c = this.data[x][y] === ALIEN ? ALIEN : this.clues[x][y];
 				const [cx, xy] = this.position;
 				if (cx === x && xy === y) {
-					c = `<i><u><b>${c}</b></u></i>`;
+					// c = `<i><u><b>${c}</b></u></i>`;
+					c = `<b>${HERO}</b>`;
 				}
 				rep.push(c);
 			}
