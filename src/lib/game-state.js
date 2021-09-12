@@ -1,18 +1,10 @@
-import { defaults } from 'marked';
 import { Commands } from './commands';
+import { MapSquare } from './map-square';
+import { EMPTY, ALIEN, HERO, DEAD, CROSSHAIR, WEAPON, EDGE } from './items';
 
-const EMPTY = '&nbsp;';
-const ALIEN = '👽';
-const HERO = '⛄';
-const DEAD = '☠';
-const CROSSHAIR = '⛶';
-const WEAPON = '⚔';
-const EDGE = '#';
+class GameState {
 
-class GameMap {
-
-	data = [];
-	clues = [];
+	map = [];
 	subscribers = [];
 	position = [0,0];
 
@@ -23,9 +15,9 @@ class GameMap {
 		for (let x = 0; x < this.width; x++) {
 			const col = [];
 			for (let y = 0; y < this.height; y++) {
-				col.push(EMPTY);
+				col.push(new MapSquare(this.map, x, y));
 			}
-			this.data.push(col);
+			this.map.push(col);
 		}
 
 		this.position = [
@@ -34,55 +26,32 @@ class GameMap {
 		];
 
 		this.placeAliens();
-		this.placeClues();
 
 		// TODO: remove in production!
 		console.log(this.toString());
 	};
 
 	placeAliens(density = null) {
-		let aliens = Math.floor(
+		let alienCount = Math.floor(
 			this.width * this.height * (density || this.density)
 		);
 
 		const [cx, cy] = this.position;
 
-		while (aliens > 0) {
+		while (alienCount > 0) {
 			const x = Math.floor(Math.random() * this.width);
 			const y = Math.floor(Math.random() * this.height);
-			if (this.data[x][y] !== EMPTY) {
+			if (!this.map[x][y].isEmpty) {
 				// something is already here. try again.
 				continue;
 			} else if (x === cx && y === cy) {
 				// user is here. no aliens in starting square.
 				continue;
 			} else {
-				this.data[x][y] = ALIEN;
-				aliens--;
+				this.map[x][y].add(ALIEN);
+				alienCount--;
 			}
 		}
-	};
-
-	placeClues() {
-		this.clues = JSON.parse(JSON.stringify(this.data))
-		for (let x = 0; x < this.width; x++) {
-			for (let y = 0; y < this.height; y++) {
-				const aliens = this.aliensNear(x,y);
-				this.clues[x][y] = aliens > 0 ? aliens : EMPTY;
-			}
-		}
-	};
-
-	aliensNear(x, y) {
-		let sum = 0;
-		for (let _x = x - 1; _x <= x + 1; _x++) {
-			for (let _y = y - 1; _y <= y + 1; _y++) {
-				if (this.data[_x] && this.data[_x][_y] === ALIEN) {
-					sum++;
-				}
-			}
-		}
-		return sum;
 	};
 
 	execute(command) {
@@ -137,10 +106,12 @@ class GameMap {
 				if (y<0 || x<0 || x>(this.width-1) || y>(this.height-1)) {
 					rep.push(EDGE);
 				} else {
-					let c = this.data[x][y] === ALIEN ? ALIEN : this.clues[x][y];
+					let c;
 					if (cx === x && cy === y) {
 						// c = `<i><u><b>${c}</b></u></i>`;
 						c = `<b>${HERO}</b>`;
+					} else {
+						c = this.map[x][y].toString();
 					}
 					rep.push(c);
 				}
@@ -151,4 +122,4 @@ class GameMap {
 	};
 }
 
-export { GameMap };
+export { GameState };
