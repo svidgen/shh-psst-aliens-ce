@@ -23,6 +23,11 @@ class GameMap {
 			this.data.push(col);
 		}
 
+		this.position = [
+			Math.floor(this.width/2),
+			Math.floor(this.height/2)
+		];
+
 		this.placeAliens();
 		this.placeClues();
 
@@ -35,11 +40,16 @@ class GameMap {
 			this.width * this.height * (density || this.density)
 		);
 
+		const [cx, cy] = this.position;
+
 		while (aliens > 0) {
 			const x = Math.floor(Math.random() * this.width);
 			const y = Math.floor(Math.random() * this.height);
 			if (this.data[x][y] !== EMPTY) {
 				// something is already here. try again.
+				continue;
+			} else if (x === cx && y === cy) {
+				// user is here. no aliens in starting square.
 				continue;
 			} else {
 				this.data[x][y] = ALIEN;
