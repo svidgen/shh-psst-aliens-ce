@@ -24,8 +24,10 @@ class GameState {
 			Math.floor(this.width/2),
 			Math.floor(this.height/2)
 		];
+		const [cx,cy] = this.position;
 
 		this.placeAliens();
+		this.map[cx][cy].visit();
 
 		// TODO: remove in production!
 		console.log(this.toString());
@@ -70,6 +72,7 @@ class GameState {
 		x = this.bounded(x + dx, 0, this.width - 1);
 		y = this.bounded(y + dy, 0, this.height - 1); 
 		this.position = [x, y];
+		this.map[x][y].visit();
 		this.fireOnChange({name: 'move', dx, dy, x, y});
 	};
 

@@ -1,10 +1,20 @@
-import { EMPTY, ALIEN, HERO, DEAD, CROSSHAIR, WEAPON, EDGE } from './items';
+import {
+	EMPTY,
+	ALIEN,
+	HERO,
+	DEAD,
+	CROSSHAIR,
+	WEAPON,
+	EDGE,
+	HIDDEN
+} from './items';
 
 class MapSquare {
 	map;
 	x;
 	y;
 	items;
+	visited = false;
 
 	constructor(map, x, y, items = []) {
 		this.map = map;
@@ -17,8 +27,12 @@ class MapSquare {
 		this.items.push(item);
 	};
 
+	visit() {
+		this.visited = true;
+	};
+
 	toString() {
-		return this.hasAlien ? ALIEN : this.clue;
+		return this.visited ? (this.hasAlien ? ALIEN : this.clue) : HIDDEN;
 	};
 
 	get isEmpty() {

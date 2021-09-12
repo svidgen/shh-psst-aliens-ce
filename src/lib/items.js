@@ -5,4 +5,4 @@ export const DEAD = '☠';
 export const CROSSHAIR = '⛶';
 export const WEAPON = '⚔';
 export const EDGE = '#';
-
+export const HIDDEN = '❓';
