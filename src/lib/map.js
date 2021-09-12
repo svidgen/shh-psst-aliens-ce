@@ -4,7 +4,10 @@ import { Commands } from './commands';
 const EMPTY = '&nbsp;';
 const ALIEN = '👽';
 const HERO = '⛄';
-const EDGE = '#'
+const DEAD = '☠';
+const CROSSHAIR = '⛶';
+const WEAPON = '⚔';
+const EDGE = '#';
 
 class GameMap {
 
@@ -118,24 +121,17 @@ class GameMap {
 	};
 
 	toString(width, height) {
+		const rep = [];
+
+		const [cx, cy] = this.position;
 		const xdelta = Math.floor((width || this.width) / 2);
 		const ydelta = Math.floor((height || this.height) / 2);
-		const rep = [];
-		const [cx, cy] = this.position;
-
-		/*
-		const lowerX = Math.max(0, cx - xdelta);
-		const lowerY = Math.max(0, cy - ydelta);
-		const upperX = Math.min(this.width - 1, cx + xdelta);
-		const upperY = Math.min(this.height - 1, cy + ydelta);
-		*/
 
 		const lowerX = cx - xdelta;
 		const upperX = cx + xdelta;
 		const lowerY = cy - ydelta;
 		const upperY = cy + ydelta;
 
-		console.log(lowerX, lowerY, upperX, upperY);
 		for (let y = lowerY; y <= upperY; y++) {
 			for (let x = lowerX; x <= upperX; x++) {
 				if (y<0 || x<0 || x>(this.width-1) || y>(this.height-1)) {
