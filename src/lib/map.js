@@ -1,9 +1,10 @@
 import { defaults } from 'marked';
 import { Commands } from './commands';
 
-const EMPTY = ' ';
-const ALIEN = 'A';
-const HERO = 'X';
+const EMPTY = '&nbsp;';
+const ALIEN = '👽';
+const HERO = '⛄';
+const EDGE = '#'
 
 class GameMap {
 
@@ -13,7 +14,7 @@ class GameMap {
 	position = [0,0];
 
 	constructor(init = {}) {
-		const defaults = {width: 10, height: 10, density: 0.25};
+		const defaults = {width: 10, height: 10, density: 0.1};
 		Object.assign(this, {...defaults, ...init});
 
 		for (let x = 0; x < this.width; x++) {
@@ -116,17 +117,37 @@ class GameMap {
 		this.subscribers.push(subscriber);
 	};
 
-	toString() {
+	toString(width, height) {
+		const xdelta = Math.floor((width || this.width) / 2);
+		const ydelta = Math.floor((height || this.height) / 2);
 		const rep = [];
-		for (let y = 0; y < this.height; y++) {
-			for (let x = 0; x < this.width; x++) {
-				let c = this.data[x][y] === ALIEN ? ALIEN : this.clues[x][y];
-				const [cx, xy] = this.position;
-				if (cx === x && xy === y) {
-					// c = `<i><u><b>${c}</b></u></i>`;
-					c = `<b>${HERO}</b>`;
+		const [cx, cy] = this.position;
+
+		/*
+		const lowerX = Math.max(0, cx - xdelta);
+		const lowerY = Math.max(0, cy - ydelta);
+		const upperX = Math.min(this.width - 1, cx + xdelta);
+		const upperY = Math.min(this.height - 1, cy + ydelta);
+		*/
+
+		const lowerX = cx - xdelta;
+		const upperX = cx + xdelta;
+		const lowerY = cy - ydelta;
+		const upperY = cy + ydelta;
+
+		console.log(lowerX, lowerY, upperX, upperY);
+		for (let y = lowerY; y <= upperY; y++) {
+			for (let x = lowerX; x <= upperX; x++) {
+				if (y<0 || x<0 || x>(this.width-1) || y>(this.height-1)) {
+					rep.push(EDGE);
+				} else {
+					let c = this.data[x][y] === ALIEN ? ALIEN : this.clues[x][y];
+					if (cx === x && cy === y) {
+						// c = `<i><u><b>${c}</b></u></i>`;
+						c = `<b>${HERO}</b>`;
+					}
+					rep.push(c);
 				}
-				rep.push(c);
 			}
 			rep.push("\n");
 		}

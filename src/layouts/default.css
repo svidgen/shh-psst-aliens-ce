@@ -9,11 +9,9 @@ body {
 }
 
 space\:grid > pre {
-	/* letter-spacing: 0.5em;
-	line-height: 1.2em; 
-	font-size: larger; */
-	padding-left: 10px;
-	font-size: 16px;
-	line-height: 20px;
-	letter-spacing: 10px;
+	font-family: emoji;
+	padding-left: 4px;
+	font-size: 30px;
+	line-height: 40px;
+	letter-spacing: 8px;
 }

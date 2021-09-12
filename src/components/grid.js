@@ -9,9 +9,9 @@ const Grid = DomClass(template, function Grid() {
 		throw new Error("No map provided!");
 	}
 
-	this.cells = this.map.toString();
+	this.cells = this.map.toString(5,5);
 	this.map.onchange(() => {
-		this.cells = this.map.toString();
+		this.cells = this.map.toString(5,5);
 	});
 
 	// for (let y = 0; y < this.map.width; y++) {
