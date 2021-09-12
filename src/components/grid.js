@@ -10,6 +10,9 @@ const Grid = DomClass(template, function Grid() {
 	}
 
 	this.cells = this.map.toString();
+	this.map.onchange(() => {
+		this.cells = this.map.toString();
+	});
 
 	// for (let y = 0; y < this.map.width; y++) {
 	// 	for (let x = 0; x < this.width; x++) {
