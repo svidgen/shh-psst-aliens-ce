@@ -18,17 +18,21 @@ class KeyBoardDPad {
 	subscriber = null;
 
 	connect(subscriber) {
+		if (this.subscriber) this.disconnect();
 		this.subscriber = subscriber;
-		this.eventListener = document.addEventListener(
+		this.eventListener = (e) => this.handleKeyDown(e);
+		document.addEventListener(
 			'keydown',
-			(e) => this.handleKeyDown(e)
+			this.eventListener	
 		);
 	};
 
 	disconnect() {
-		document.removeEventListener(this.eventListener);
-		this.eventListener = null;
-		this.subscriber = null;
+		if (this.eventListener) {
+			document.removeEventListener('keydown', this.eventListener);
+			this.eventListener = null;
+			this.subscriber = null;
+		}
 	};
 
 	handleKeyDown(e) {

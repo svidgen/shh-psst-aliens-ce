@@ -1,6 +1,6 @@
 import { Commands } from './commands';
 import { GameLocation } from './game-location';
-import { EMPTY, ALIEN, HERO, DEAD, CROSSHAIR, WEAPON, EDGE, HEALTH } from './items';
+import { ALIEN, DEAD_PERSON, WEAPON, EDGE, WOUND } from './items';
 
 class GameState {
 
@@ -9,9 +9,6 @@ class GameState {
 	weaponDurability = 0;
 
 	subscribers = [];
-
-	// TODO: make configurable.
-	health = [HEALTH, HEALTH, HEALTH];
 
 	constructor(init = {}) {
 		const defaults = {width: 10, height: 10, density: 0.1};
@@ -40,14 +37,39 @@ class GameState {
 		console.log(this.toString());
 	};
 
+	countItem(item) {
+		let count = 0;
+		for (let x = 0; x < this.width; x++) {
+			for (let y = 0; y < this.height; y++) {
+				if (this.data[x][y].has(item)) {
+					count++;
+				}
+			}
+		}
+		return count;
+	};
+
+	get aliens() {
+		return this.countItem(ALIEN);
+	};
+
+	get murders() {
+		return this.countItem(DEAD_PERSON);
+	}
+
+	get wounds() {
+		return this.countItem(WOUND);
+	}
+
 	placeItems(item, density = null) {
-		let itemCount = Math.floor(
+		const itemCount = Math.floor(
 			this.width * this.height * (density || this.density)
 		);
+		let itemsPlaced = 0;
 
 		const [cx, cy] = this.position;
 
-		while (itemCount > 0) {
+		while (itemsPlaced < itemCount) {
 			const x = Math.floor(Math.random() * this.width);
 			const y = Math.floor(Math.random() * this.height);
 			if (!this.data[x][y].isEmpty) {
@@ -58,9 +80,11 @@ class GameState {
 				continue;
 			} else {
 				this.data[x][y].add(item);
-				itemCount--;
+				itemsPlaced++;
 			}
 		}
+
+		return itemsPlaced;
 	};
 
 	placeWeapons(density = null) {

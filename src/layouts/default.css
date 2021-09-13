@@ -6,10 +6,23 @@ body {
 	line-height: 1.2;
 	color: #333333;
 	background-color: white;
+	text-align: center;
+}
+
+space\:game h2 {
+	color: green;
+	font-family: 'Courier New', Courier, monospace;
+}
+
+space\:grid {
+	display: inline-block;
+	border: 0.1em dashed silver;
 }
 
 space\:grid div {
 	display: table;
+	margin-left: auto;
+	margin-right: auto;
 	font-family: emoji;
 	font-size: 30px;
 }
@@ -25,4 +38,17 @@ space\:cell {
 	border: 0px;
 	width: 3em;
 	height: 3em;
+}
+
+space\:modalbox {
+	position: absolute;
+	left: calc(50% - 11em);
+	top: 5em;
+	width: 20em;
+	height: 4em;
+	padding: 1em;
+	border: 0.5em solid green;
+	background-color: lightgreen;
+	font-size: 14pt;
+	text-align: center;
 }
