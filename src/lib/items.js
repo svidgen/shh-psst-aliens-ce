@@ -1,6 +1,6 @@
 export const EMPTY = '&nbsp;';
 export const HERO = '⛄';
-export const DEAD_PERSON = '☠';
+export const DEAD_PERSON = '⚰️';
 export const CROSSHAIR = '⛶';
 export const WEAPON = '⚔';
 export const EDGE = '🌲';
