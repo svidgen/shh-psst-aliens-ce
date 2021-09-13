@@ -11,11 +11,36 @@ const Game = DomClass(template, function Game() {
 	this.dpad = new KeyBoardDPad();
 
 	this.init = function() {
-		const state = new GameState({width: 20, height: 20, density: 0.1});
+		const state = new GameState({width: 17, height: 17, density: 0.1});
 		this.grid = new Grid({state});
 
 		this.dpad.disconnect();
 		this.dpad.connect(command => state.execute(command));
+
+		this.talkButton.onclick = function() {
+			state.execute(Commands.TALK);
+		};
+
+		this.killButton.onclick = function() {
+			state.execute(Commands.KILL);
+		};
+
+		this.upButton.onclick = function() {
+			state.execute(Commands.UP);
+		};
+
+		this.downButton.onclick = function() {
+			state.execute(Commands.DOWN);
+		};
+
+		this.leftButton.onclick = function() {
+			state.execute(Commands.LEFT);
+		};
+
+		this.rightButton.onclick = function() {
+			state.execute(Commands.RIGHT);
+		};
+
 		state.onchange(() => {
 			if (state.wounds >= 3) {
 				_t.loseGame("Sorry, you died!")
@@ -27,9 +52,18 @@ const Game = DomClass(template, function Game() {
 		});
 	};
 
+
+
 	this.endGame = function(message) {
 		this.dpad.disconnect();
 		this.showModal(message);
+
+		this.talkButton.onclick = null;
+		this.killButton.onclick = null;
+		this.upButton.onclick = null;
+		this.downButton.onclick = null;
+		this.leftButton.onclick = null;
+		this.rightButton.onclick = null;
 	};
 
 	this.loseGame = function(message) {

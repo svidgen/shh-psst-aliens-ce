@@ -20,7 +20,10 @@ class KeyBoardDPad {
 	connect(subscriber) {
 		if (this.subscriber) this.disconnect();
 		this.subscriber = subscriber;
-		this.eventListener = (e) => this.handleKeyDown(e);
+		this.eventListener = (e) => {
+			e.preventDefault();
+			this.handleKeyDown(e);
+		};
 		document.addEventListener(
 			'keydown',
 			this.eventListener	
