@@ -1,3 +1,3 @@
 <space:cell>
-	<div data-id='value'></div>
+	<span data-id='value'></span>
 </space:cell>

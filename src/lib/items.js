@@ -1,8 +1,13 @@
 export const EMPTY = '&nbsp;';
-export const ALIEN = '👽';
 export const HERO = '⛄';
-export const DEAD = '☠';
+export const DEAD_PERSON = '☠';
 export const CROSSHAIR = '⛶';
 export const WEAPON = '⚔';
-export const EDGE = '#';
+export const EDGE = '🌲';
 export const HIDDEN = '🌫️';
+export const WOUND = '🩸';
+export const HEALTH = '❤️';
+export const PERSON = '🙍';
+export const ALIEN = PERSON;
+export const DEAD_ALIEN = '👽';
+export const ANGRY_PERSON = '😠';

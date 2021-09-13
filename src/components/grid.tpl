@@ -1,3 +1,3 @@
 <space:grid>
-	<pre data-id='cells'></pre>
+	<div data-id='cells'></div>
 </space:grid>

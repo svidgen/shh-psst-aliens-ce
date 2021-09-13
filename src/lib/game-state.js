@@ -1,6 +1,6 @@
 import { Commands } from './commands';
-import { MapSquare } from './map-square';
-import { EMPTY, ALIEN, HERO, DEAD, CROSSHAIR, WEAPON, EDGE } from './items';
+import { GameLocation } from './game-location';
+import { EMPTY, ALIEN, HERO, DEAD, CROSSHAIR, WEAPON, EDGE, HEALTH } from './items';
 
 class GameState {
 
@@ -10,6 +10,9 @@ class GameState {
 
 	subscribers = [];
 
+	// TODO: make configurable.
+	health = [HEALTH, HEALTH, HEALTH];
+
 	constructor(init = {}) {
 		const defaults = {width: 10, height: 10, density: 0.1};
 		Object.assign(this, {...defaults, ...init});
@@ -17,7 +20,7 @@ class GameState {
 		for (let x = 0; x < this.width; x++) {
 			const col = [];
 			for (let y = 0; y < this.height; y++) {
-				col.push(new MapSquare(this, x, y));
+				col.push(new GameLocation(this, x, y));
 			}
 			this.data.push(col);
 		}
@@ -29,7 +32,7 @@ class GameState {
 		const [cx,cy] = this.position;
 
 		this.placeAliens();
-		this.placeWeapons();
+		// this.placeWeapons();
 
 		this.data[cx][cy].enter();
 
@@ -74,7 +77,9 @@ class GameState {
 			[Commands.UP]: () => { t.move(0, -1); },
 			[Commands.DOWN]: () => { t.move(0, 1); },
 			[Commands.RIGHT]: () => { t.move(1, 0); },
-			[Commands.LEFT]: () => { t.move(-1, 0); }
+			[Commands.LEFT]: () => { t.move(-1, 0); },
+			[Commands.TALK]: () => { t.talk(); },
+			[Commands.KILL]: () => { t.kill(); }
 		}[command];
 		action && action();
 	};
@@ -87,6 +92,18 @@ class GameState {
 		this.position = [x, y];
 		this.data[x][y].enter();
 		this.fireOnChange({name: 'move', dx, dy, x, y});
+	};
+
+	talk() {
+		const [x,y] = this.position;
+		this.data[x][y].talk();
+		this.fireOnChange({name: 'talk', x, y});
+	};
+
+	kill() {
+		const [x,y] = this.position;
+		this.data[x][y].kill();
+		this.fireOnChange({name: 'kill', x, y});
 	};
 
 	bounded(value, min, max) {
@@ -143,10 +160,17 @@ class GameState {
 		return rows;
 	};
 
+	mapSlice(width, height, map) {
+		const data = this.sliceYX(width, height);
+		return data.map(row => {
+			return row.map(square => map(square));
+		});
+	};
+
 	toString(width, height) {
 		const data = this.sliceYX(width, height);
 		return data.map(row => {
-			return row.map(column => column.toString()).join('');
+			return row.map(square => square.toString()).join('');
 		}).join('\n');
 	};
 }

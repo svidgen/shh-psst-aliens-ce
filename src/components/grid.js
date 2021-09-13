@@ -1,17 +1,19 @@
 const { DomClass } = require('wirejs-dom');
 const { Cell } = require('./cell');
+const { GridRow } = require('./grid-row');
 const template = require('./grid.tpl').default;
 
 const Grid = DomClass(template, function Grid() {
-	this.cells = [];
 
-	if (!this.map) {
+	if (!this.state) {
 		throw new Error("No map provided!");
 	}
 
-	this.cells = this.map.toString(5,5);
-	this.map.onchange(() => {
-		this.cells = this.map.toString(5,5);
+	this.cells = this.state.mapSlice(5, 5, i => new Cell({item: i}));
+	this.state.onchange(() => {
+		this.cells = this.state.mapSlice(5, 5, i => new Cell({item: i})).map(row => {
+			return new GridRow({cells: row});
+		});
 	});
 
 	// for (let y = 0; y < this.map.width; y++) {

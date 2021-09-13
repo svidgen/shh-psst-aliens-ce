@@ -8,10 +8,21 @@ body {
 	background-color: white;
 }
 
-space\:grid > pre {
+space\:grid div {
+	display: table;
 	font-family: emoji;
-	padding-left: 4px;
 	font-size: 30px;
-	line-height: 40px;
-	letter-spacing: 8px;
+}
+
+space\:gridrow {
+	display: table-row;
+}
+
+space\:cell {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	border: 0px;
+	width: 3em;
+	height: 3em;
 }

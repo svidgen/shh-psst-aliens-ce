@@ -8,7 +8,9 @@ const KEYMAP = Object.freeze({
 	"ArrowLeft": Commands.LEFT,
 	"KeyA": Commands.LEFT,
 	"ArrowRight": Commands.RIGHT,
-	"KeyD": Commands.RIGHT
+	"KeyD": Commands.RIGHT,
+	"KeyT": Commands.TALK,
+	"KeyK": Commands.KILL
 });
 
 class KeyBoardDPad {
