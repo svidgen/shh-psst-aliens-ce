@@ -1,5 +1,7 @@
 # Shh-Psst! Aliens!!! (CE)
 
+Playable at [js13kGames](https://js13kgames.com/entries/shh-psst-aliens-ce).
+
 A "Live Action" Minesweeper style webgame, submitted to js13kGames 2021.
 
 In this game, you're just a standard hero (⛄) looking to kill a bunch of hostile aliens.
@@ -24,5 +26,3 @@ or the <i>on-screen Arrow buttons</i>.
 
 Use the Talk and Kill buttons or `T` and `K`
 on your keyboard.
-
-***Once the game goes live on js13kGames, I'll provide a link.***
