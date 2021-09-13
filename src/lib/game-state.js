@@ -5,8 +5,10 @@ import { EMPTY, ALIEN, HERO, DEAD, CROSSHAIR, WEAPON, EDGE } from './items';
 class GameState {
 
 	map = [];
-	subscribers = [];
 	position = [0,0];
+	weaponDurability = 0;
+
+	subscribers = [];
 
 	constructor(init = {}) {
 		const defaults = {width: 10, height: 10, density: 0.1};
@@ -15,7 +17,7 @@ class GameState {
 		for (let x = 0; x < this.width; x++) {
 			const col = [];
 			for (let y = 0; y < this.height; y++) {
-				col.push(new MapSquare(this.map, x, y));
+				col.push(new MapSquare(this, x, y));
 			}
 			this.map.push(col);
 		}
@@ -27,20 +29,22 @@ class GameState {
 		const [cx,cy] = this.position;
 
 		this.placeAliens();
+		this.placeWeapons();
+
 		this.map[cx][cy].visit();
 
 		// TODO: remove in production!
 		console.log(this.toString());
 	};
 
-	placeAliens(density = null) {
-		let alienCount = Math.floor(
+	placeItems(item, density = null) {
+		let itemCount = Math.floor(
 			this.width * this.height * (density || this.density)
 		);
 
 		const [cx, cy] = this.position;
 
-		while (alienCount > 0) {
+		while (itemCount > 0) {
 			const x = Math.floor(Math.random() * this.width);
 			const y = Math.floor(Math.random() * this.height);
 			if (!this.map[x][y].isEmpty) {
@@ -50,10 +54,18 @@ class GameState {
 				// user is here. no aliens in starting square.
 				continue;
 			} else {
-				this.map[x][y].add(ALIEN);
-				alienCount--;
+				this.map[x][y].add(item);
+				itemCount--;
 			}
 		}
+	};
+
+	placeWeapons(density = null) {
+		this.placeItems(WEAPON, this.density/3);
+	};
+
+	placeAliens(denstity = null) {
+		this.placeItems(ALIEN);
 	};
 
 	execute(command) {
@@ -112,7 +124,7 @@ class GameState {
 					let c;
 					if (cx === x && cy === y) {
 						// c = `<i><u><b>${c}</b></u></i>`;
-						c = `<b>${HERO}</b>`;
+						c = HERO;
 					} else {
 						c = this.map[x][y].toString();
 					}
