@@ -4,7 +4,7 @@ import { EMPTY, ALIEN, HERO, DEAD, CROSSHAIR, WEAPON, EDGE } from './items';
 
 class GameState {
 
-	map = [];
+	data = [];
 	position = [0,0];
 	weaponDurability = 0;
 
@@ -19,7 +19,7 @@ class GameState {
 			for (let y = 0; y < this.height; y++) {
 				col.push(new MapSquare(this, x, y));
 			}
-			this.map.push(col);
+			this.data.push(col);
 		}
 
 		this.position = [
@@ -31,7 +31,7 @@ class GameState {
 		this.placeAliens();
 		this.placeWeapons();
 
-		this.map[cx][cy].visit();
+		this.data[cx][cy].enter();
 
 		// TODO: remove in production!
 		console.log(this.toString());
@@ -47,14 +47,14 @@ class GameState {
 		while (itemCount > 0) {
 			const x = Math.floor(Math.random() * this.width);
 			const y = Math.floor(Math.random() * this.height);
-			if (!this.map[x][y].isEmpty) {
+			if (!this.data[x][y].isEmpty) {
 				// something is already here. try again.
 				continue;
 			} else if (x === cx && y === cy) {
 				// user is here. no aliens in starting square.
 				continue;
 			} else {
-				this.map[x][y].add(item);
+				this.data[x][y].add(item);
 				itemCount--;
 			}
 		}
@@ -81,10 +81,11 @@ class GameState {
 
 	move(dx, dy) {
 		let [x, y] = this.position;
+		this.data[x][y].leave();
 		x = this.bounded(x + dx, 0, this.width - 1);
 		y = this.bounded(y + dy, 0, this.height - 1); 
 		this.position = [x, y];
-		this.map[x][y].visit();
+		this.data[x][y].enter();
 		this.fireOnChange({name: 'move', dx, dy, x, y});
 	};
 
@@ -104,8 +105,20 @@ class GameState {
 		this.subscribers.push(subscriber);
 	};
 
-	toString(width, height) {
-		const rep = [];
+	inBounds(x, y) {
+		return !(
+			y < 0 ||
+			x < 0 ||
+			x > (this.width - 1) ||
+			y > (this.height - 1)
+		);
+	};
+
+	/*
+	* returns width/height slice around the HERO in y,x format
+	*/
+	sliceYX(width, height) {
+		const rows = [];
 
 		const [cx, cy] = this.position;
 		const xdelta = Math.floor((width || this.width) / 2);
@@ -117,23 +130,24 @@ class GameState {
 		const upperY = cy + ydelta;
 
 		for (let y = lowerY; y <= upperY; y++) {
+			const row = [];
 			for (let x = lowerX; x <= upperX; x++) {
-				if (y<0 || x<0 || x>(this.width-1) || y>(this.height-1)) {
-					rep.push(EDGE);
+				if (!this.inBounds(x, y)) {
+					row.push(EDGE);
 				} else {
-					let c;
-					if (cx === x && cy === y) {
-						// c = `<i><u><b>${c}</b></u></i>`;
-						c = HERO;
-					} else {
-						c = this.map[x][y].toString();
-					}
-					rep.push(c);
+					row.push(this.data[x][y]);
 				}
 			}
-			rep.push("\n");
+			rows.push(row);
 		}
-		return rep.join('');
+		return rows;
+	};
+
+	toString(width, height) {
+		const data = this.sliceYX(width, height);
+		return data.map(row => {
+			return row.map(column => column.toString()).join('');
+		}).join('\n');
 	};
 }
 

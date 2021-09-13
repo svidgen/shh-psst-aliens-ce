@@ -18,7 +18,7 @@ class MapSquare {
 
 	constructor(state, x, y, items = []) {
 		this.state = state;
-		this.map = state.map;
+		this.map = state.data;
 		this.x = x;
 		this.y = y;
 		this.items = items;
@@ -28,16 +28,37 @@ class MapSquare {
 		this.items.push(item);
 	};
 
+	remove(item) {
+		const index = this.items.indexOf(item);
+		if (index > -1) {
+			this.items.splice(index, 1);
+		}
+	};
+
 	has(item) {
 		return this.items.indexOf(item) > -1;
 	};
 
-	visit() {
+	enter() {
 		this.visited = true;
+		this.add(HERO);
+	};
+
+	leave() {
+		this.remove(HERO);
 	};
 
 	toString() {
-		return this.visited ? (this.has(ALIEN) ? ALIEN : this.clue) : HIDDEN;
+		if (this.has(HERO)) {
+			return HERO;
+		}
+		if (!this.visited) {
+			return HIDDEN;
+		}
+		if (this.has(ALIEN)) {
+			return ALIEN;
+		}
+		return this.clue.toString();
 	};
 
 	get isEmpty() {
